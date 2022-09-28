@@ -17,12 +17,35 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/client-inmueble-app",
+            "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
+            "outputHashing": "all",
+            "optimization": false,
+            "sourceMap": true,
+            "buildOptimizer": false,
+            "budgets": [
+              {
+                "type": "initial",
+                "maximumWarning": "500kb",
+                "maximumError": "1mb"
+              },
+              {
+                "type": "anyComponentStyle",
+                "maximumWarning": "2kb",
+                "maximumError": "4kb"
+              }
+            ],
+            "fileReplacements": [
+              {
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.dev.ts"
+              }
+            ],
+
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -33,7 +56,10 @@
             "scripts": []
           },
           "configurations": {
-            "production": {
+            "prod": {
+              "optimization": true,
+              "sourceMap": false,
+              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -54,25 +80,41 @@
               ],
               "outputHashing": "all"
             },
-            "development": {
-              "buildOptimizer": false,
-              "optimization": false,
-              "vendorChunk": true,
-              "extractLicenses": false,
-              "sourceMap": true,
-              "namedChunks": true
+            "dev": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev.ts"
+                }
+              ],
+              "outputHashing": "all"
             }
-          },
-          "defaultConfiguration": "production"
+          }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options":{
+            "browserTarget":"client-inmueble-app:build",
+            "port": 5200
+          },
           "configurations": {
-            "production": {
-              "browserTarget": "client-inmueble-app:build:production"
+            "prod": {
+              "browserTarget": "client-inmueble-app:build:prod"
             },
-            "development": {
-              "browserTarget": "client-inmueble-app:build:development"
+            "dev": {
+              "browserTarget": "client-inmueble-app:build:dev"
             }
           },
           "defaultConfiguration": "development"
@@ -105,6 +147,6 @@
     }
   },
   "cli": {
-    "analytics": false
+    "analytics": "68190a82-e63d-4a42-9da1-134319933e4e"
   }
 }
